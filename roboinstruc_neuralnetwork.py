@@ -14,13 +14,13 @@ cost = tf.reduce_mean(tf.square(y_ - y))
 # cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y)
 # train_step = tf.train.GradientDescentOptimizer(0.1).minimize(cost)
 train_step = tf.train.AdamOptimizer(0.5).minimize(cost)
-
+saver = tf.train.Saver()
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
-for _ in range(10000):
+for _ in range(100):
     batch_xs = db.data
     batch_ys = db.labels
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-
+save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/model.ckpt")
 error = cost
 print(sess.run(error, feed_dict={x: db.test_data, y_: db.test_labels}))

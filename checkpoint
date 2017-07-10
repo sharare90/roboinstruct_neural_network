@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/sharare/PycharmProjects/roboinstruct_training/model.ckpt"
+all_model_checkpoint_paths: "/home/sharare/PycharmProjects/roboinstruct_training/model.ckpt"
