@@ -1,8 +1,19 @@
+#! /usr/bin/env python
+from argparse import ArgumentParser
+
 import numpy as np
 import tensorflow as tf
 
 
-features = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]], dtype=np.float32)
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument('input', type=float, nargs=15)
+    return parser.parse_args()
+
+
+def get_features_evaluate(arguments):
+    features = np.array(arguments.input, dtype=np.float32).reshape((1, 15))
+    evaluate(features)
 
 
 def evaluate(features):
@@ -13,9 +24,12 @@ def evaluate(features):
     y = tf.matmul(x, W) + b
     saver = tf.train.Saver()
     with tf.Session() as sess:
-        saver.restore(sess, "/home/sharare/PycharmProjects/roboinstruct_training/model.ckpt")
-        output = sess.run(y, feed_dict={x: features})
+        saver.restore(sess, "./model.ckpt")
+        output = sess.run(y, feed_dict={x: features})[0, :]
 
     print(output)
 
-evaluate(features)
+
+if __name__ == "__main__":
+    args = parse_args()
+    get_features_evaluate(args)
