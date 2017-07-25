@@ -1,1 +1,1 @@
-data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/Data/numpy"
+data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/NewData/numpy"

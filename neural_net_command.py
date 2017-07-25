@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 import numpy as np
 import tensorflow as tf
+from sklearn.externals import joblib
 
 
 def parse_args():
@@ -23,10 +24,13 @@ def evaluate(features):
 
     y = tf.matmul(x, W) + b
     saver = tf.train.Saver()
+    input_scaler = joblib.load("data_scaler.pkl")
+    output_scaler = joblib.load("label_scaler.pkl")
+    features = input_scaler.transform(features)
     with tf.Session() as sess:
         saver.restore(sess, "./model.ckpt")
         output = sess.run(y, feed_dict={x: features})[0, :]
-
+    output = output_scaler.inverse_transform(output)
     print(output)
 
 

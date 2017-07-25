@@ -2,6 +2,8 @@ from os import listdir
 from os.path import join
 
 import numpy as np
+from sklearn import preprocessing
+from sklearn.externals import joblib
 
 from settings import data_directory
 
@@ -15,10 +17,10 @@ class Database(object):
         self.test_data = None
         self.test_labels = None
         self._data_directory = data_directory
-        self._create_data()
         self._epochs_completed = 0
         self._index_in_epoch = 0
-        self._num_examples = 100
+        self.num_examples = 9
+        self._create_data()
 
     def _create_data(self):
         for file_name in listdir(self._data_directory):
@@ -26,11 +28,22 @@ class Database(object):
             self._input_matrices.append(position_data[:-1, :])
             self._label_matrices.append(position_data[1:, :8])
 
-        self.data = np.concatenate(self._input_matrices[:100])
-        self.labels = np.concatenate(self._label_matrices[:100])
+        self.data = np.concatenate(self._input_matrices[:self.num_examples])
+        self.labels = np.concatenate(self._label_matrices[:self.num_examples])
+        data_scaler = preprocessing.StandardScaler()
+        label_scaler = preprocessing.StandardScaler()
+        data_scaler.fit(self.data)
+        label_scaler.fit(self.labels)
+        joblib.dump(data_scaler, 'data_scaler.pkl')
+        joblib.dump(label_scaler, 'label_scaler.pkl')
+        self.data = data_scaler.transform(self.data)
+        self.labels = label_scaler.transform(self.labels)
 
-        self.test_data = np.concatenate(self._input_matrices[100:])
-        self.test_labels = np.concatenate(self._label_matrices[100:])
+        self.test_data = np.concatenate(self._input_matrices[self.num_examples:])
+        self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
+
+        self.test_data = data_scaler.transform(self.test_data)
+        self.test_labels = label_scaler.transform(self.test_labels)
 
     def get_length(self):
         return len(self.data)
@@ -38,23 +51,23 @@ class Database(object):
     def next_batch(self, batch_size):
         start = self._index_in_epoch
         self._index_in_epoch += batch_size
-        if self._index_in_epoch > self._num_examples:
+        if self._index_in_epoch > self.num_examples:
             # Finished epoch
             self._epochs_completed += 1
             # Shuffle the data
-            perm = np.arange(self._num_examples)
+            perm = np.arange(self.num_examples)
             np.random.shuffle(perm)
             self.data = self.data[perm]
             self.labels = self.labels[perm]
             # Start next epoch
             start = 0
             self._index_in_epoch = batch_size
-            assert batch_size <= self._num_examples
+            assert batch_size <= self.num_examples
         end = self._index_in_epoch
         return self.data[start:end], self.labels[start:end]
 
-db = Database(data_directory)
 
+db = Database(data_directory)
 
 if __name__ == "__main__":
     print(db.get_length())
