@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 from argparse import ArgumentParser
 
 import numpy as np
@@ -24,8 +24,12 @@ def evaluate(features):
 
     y = tf.matmul(x, W) + b
     saver = tf.train.Saver()
+    input_normalizer = joblib.load("data_normalizer.pkl")
+    input_PCA = joblib.load("data_PCA.pkl")
     input_scaler = joblib.load("data_scaler.pkl")
     output_scaler = joblib.load("label_scaler.pkl")
+    features = input_normalizer.transform(features)
+    features = input_PCA.transform(features)
     features = input_scaler.transform(features)
     with tf.Session() as sess:
         saver.restore(sess, "./model.ckpt")

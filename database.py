@@ -2,7 +2,7 @@ from os import listdir
 from os.path import join
 
 import numpy as np
-from sklearn import preprocessing
+from sklearn import preprocessing, decomposition
 from sklearn.externals import joblib
 
 from settings import data_directory
@@ -20,6 +20,10 @@ class Database(object):
         self._epochs_completed = 0
         self._index_in_epoch = 0
         self.num_examples = 9
+        self.data_scaler = preprocessing.StandardScaler()
+        self.label_scaler = preprocessing.StandardScaler()
+        self.data_normalizer = preprocessing.Normalizer()
+        self.data_PCA = decomposition.PCA(n_components=15)
         self._create_data()
 
     def _create_data(self):
@@ -30,20 +34,15 @@ class Database(object):
 
         self.data = np.concatenate(self._input_matrices[:self.num_examples])
         self.labels = np.concatenate(self._label_matrices[:self.num_examples])
-        data_scaler = preprocessing.StandardScaler()
-        label_scaler = preprocessing.StandardScaler()
-        data_scaler.fit(self.data)
-        label_scaler.fit(self.labels)
-        joblib.dump(data_scaler, 'data_scaler.pkl')
-        joblib.dump(label_scaler, 'label_scaler.pkl')
-        self.data = data_scaler.transform(self.data)
-        self.labels = label_scaler.transform(self.labels)
-
         self.test_data = np.concatenate(self._input_matrices[self.num_examples:])
         self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
+        self.data_preprocess()
 
-        self.test_data = data_scaler.transform(self.test_data)
-        self.test_labels = label_scaler.transform(self.test_labels)
+        self.label_scaler.fit(self.labels)
+        joblib.dump(self.label_scaler, 'label_scaler.pkl')
+        self.labels = self.label_scaler.transform(self.labels)
+
+        self.test_labels = self.label_scaler.transform(self.test_labels)
 
     def get_length(self):
         return len(self.data)
@@ -65,6 +64,20 @@ class Database(object):
             assert batch_size <= self.num_examples
         end = self._index_in_epoch
         return self.data[start:end], self.labels[start:end]
+
+    def data_preprocess(self):
+        self.data_normalizer.fit(self.data)
+        joblib.dump(self.data_normalizer, 'data_normalizer.pkl')
+        self.data = self.data_normalizer.transform(self.data)
+        self.test_data = self.data_normalizer.transform(self.test_data)
+        self.data_PCA.fit(self.data)
+        joblib.dump(self.data_PCA, 'data_PCA.pkl')
+        self.data = self.data_PCA.transform(self.data)
+        self.test_data = self.data_PCA.transform(self.test_data)
+        self.data_scaler.fit(self.data)
+        joblib.dump(self.data_scaler, 'data_scaler.pkl')
+        self.data = self.data_scaler.transform(self.data)
+        self.test_data = self.data_scaler.transform(self.test_data)
 
 
 db = Database(data_directory)
