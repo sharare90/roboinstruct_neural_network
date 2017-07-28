@@ -24,15 +24,15 @@ def evaluate(features):
 
     y = tf.matmul(x, W) + b
     saver = tf.train.Saver()
-    input_normalizer = joblib.load("data_normalizer.pkl")
-    input_PCA = joblib.load("data_PCA.pkl")
-    input_scaler = joblib.load("data_scaler.pkl")
-    output_scaler = joblib.load("label_scaler.pkl")
+    input_normalizer = joblib.load("/states/last/data_normalizer.pkl")
+    input_PCA = joblib.load("/states/last/data_PCA.pkl")
+    input_scaler = joblib.load("/states/last/data_scaler.pkl")
+    output_scaler = joblib.load("/states/last/label_scaler.pkl")
     features = input_normalizer.transform(features)
     features = input_PCA.transform(features)
     features = input_scaler.transform(features)
     with tf.Session() as sess:
-        saver.restore(sess, "./model.ckpt")
+        saver.restore(sess, "./states/last/model.ckpt")
         output = sess.run(y, feed_dict={x: features})[0, :]
     output = output_scaler.inverse_transform(output)
     print(output)

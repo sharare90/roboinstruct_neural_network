@@ -30,6 +30,6 @@ for _ in range(10000):
     batch_xs = db.data
     batch_ys = db.labels
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
-save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/model.ckpt")
+save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/states/last/model.ckpt")
 error = cost
 print(sess.run(error, feed_dict={x: db.test_data, y_: db.test_labels}))

@@ -38,11 +38,11 @@ class Database(object):
         self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
         self.data_preprocess()
 
-        self.label_scaler.fit(self.labels)
-        joblib.dump(self.label_scaler, 'label_scaler.pkl')
-        self.labels = self.label_scaler.transform(self.labels)
-
-        self.test_labels = self.label_scaler.transform(self.test_labels)
+        # self.label_scaler.fit(self.labels)
+        # joblib.dump(self.label_scaler, 'label_scaler.pkl')
+        # self.labels = self.label_scaler.transform(self.labels)
+        #
+        # self.test_labels = self.label_scaler.transform(self.test_labels)
 
     def get_length(self):
         return len(self.data)
@@ -67,15 +67,15 @@ class Database(object):
 
     def data_preprocess(self):
         self.data_normalizer.fit(self.data)
-        joblib.dump(self.data_normalizer, 'data_normalizer.pkl')
+        joblib.dump(self.data_normalizer, './states/last/data_normalizer.pkl')
         self.data = self.data_normalizer.transform(self.data)
         self.test_data = self.data_normalizer.transform(self.test_data)
         self.data_PCA.fit(self.data)
-        joblib.dump(self.data_PCA, 'data_PCA.pkl')
+        joblib.dump(self.data_PCA, './states/last/data_PCA.pkl')
         self.data = self.data_PCA.transform(self.data)
         self.test_data = self.data_PCA.transform(self.test_data)
         self.data_scaler.fit(self.data)
-        joblib.dump(self.data_scaler, 'data_scaler.pkl')
+        joblib.dump(self.data_scaler, './states/last/data_scaler.pkl')
         self.data = self.data_scaler.transform(self.data)
         self.test_data = self.data_scaler.transform(self.test_data)
 
