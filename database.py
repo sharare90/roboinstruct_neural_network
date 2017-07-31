@@ -38,11 +38,11 @@ class Database(object):
         self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
         self.data_preprocess()
 
-        # self.label_scaler.fit(self.labels)
-        # joblib.dump(self.label_scaler, 'label_scaler.pkl')
-        # self.labels = self.label_scaler.transform(self.labels)
-        #
-        # self.test_labels = self.label_scaler.transform(self.test_labels)
+        self.label_scaler.fit(self.labels)
+        joblib.dump(self.label_scaler, 'label_scaler.pkl')
+        self.labels = self.label_scaler.transform(self.labels)
+
+        self.test_labels = self.label_scaler.transform(self.test_labels)
 
     def get_length(self):
         return len(self.data)

@@ -2,8 +2,8 @@ import tensorflow as tf
 from database import db
 
 x = tf.placeholder(tf.float32, [None, 15])
-W = tf.Variable(tf.random_normal(shape=[15, 8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
-b = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+W = tf.Variable(tf.random_normal(shape=[15, 8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
+b = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 
 
 # def weight_variable(shape):
@@ -19,9 +19,9 @@ b = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=1.0, dtype=tf.float
 y = tf.matmul(x, W) + b
 y_ = tf.placeholder(tf.float32, [None, 8])
 
-# cost = tf.reduce_sum(tf.pow(y - y_, 2)) / (2 * len(db.data))
-cost = tf.reduce_mean(tf.square(y_ - y))
-train_step = tf.train.AdamOptimizer(0.001).minimize(cost)
+cost = tf.reduce_sum(tf.pow(y - y_, 2)) / (2 * len(db.data))
+# cost = tf.reduce_mean(tf.square(y_ - y))
+train_step = tf.train.AdamOptimizer(0.05).minimize(cost)
 saver = tf.train.Saver()
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
