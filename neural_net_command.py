@@ -19,10 +19,15 @@ def get_features_evaluate(arguments):
 
 def evaluate(features):
     x = tf.placeholder(tf.float32, [None, 15])
-    W = tf.Variable(tf.random_normal(shape=[15, 8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
-    b = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
 
-    y = tf.matmul(x, W) + b
+    W1 = tf.Variable(tf.random_normal(shape=[15, 16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    b1 = tf.Variable(tf.random_normal(shape=[16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    y1 = tf.matmul(x, W1) + b1
+
+    W2 = tf.Variable(tf.random_normal(shape=[16, 8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    b2 = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+
+    y = tf.matmul(y1, W2) + b2
     saver = tf.train.Saver()
     input_normalizer = joblib.load("/states/last/data_normalizer.pkl")
     input_PCA = joblib.load("/states/last/data_PCA.pkl")
