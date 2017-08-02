@@ -29,10 +29,10 @@ def evaluate(features):
 
     y = tf.matmul(y1, W2) + b2
     saver = tf.train.Saver()
-    input_normalizer = joblib.load("/states/last/data_normalizer.pkl")
-    input_PCA = joblib.load("/states/last/data_PCA.pkl")
-    input_scaler = joblib.load("/states/last/data_scaler.pkl")
-    output_scaler = joblib.load("/states/last/label_scaler.pkl")
+    input_normalizer = joblib.load("./states/last/data_normalizer.pkl")
+    input_PCA = joblib.load("./states/last/data_PCA.pkl")
+    input_scaler = joblib.load("./states/last/data_scaler.pkl")
+    output_scaler = joblib.load("./states/last/label_scaler.pkl")
     features = input_normalizer.transform(features)
     features = input_PCA.transform(features)
     features = input_scaler.transform(features)
