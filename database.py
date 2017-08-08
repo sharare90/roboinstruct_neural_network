@@ -19,7 +19,7 @@ class Database(object):
         self._data_directory = data_directory
         self._epochs_completed = 0
         self._index_in_epoch = 0
-        self.num_examples = 9
+        self.num_examples = 1
         self.data_scaler = preprocessing.StandardScaler()
         self.label_scaler = preprocessing.StandardScaler()
         self.data_normalizer = preprocessing.Normalizer()
@@ -32,10 +32,16 @@ class Database(object):
             self._input_matrices.append(position_data[:-1, :])
             self._label_matrices.append(position_data[1:, :8])
 
-        self.data = np.concatenate(self._input_matrices[:self.num_examples])
-        self.labels = np.concatenate(self._label_matrices[:self.num_examples])
-        self.test_data = np.concatenate(self._input_matrices[self.num_examples:])
-        self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
+        if self.num_examples != 1:
+            self.data = np.concatenate(self._input_matrices[:self.num_examples])
+            self.labels = np.concatenate(self._label_matrices[:self.num_examples])
+            self.test_data = np.concatenate(self._input_matrices[self.num_examples:])
+            self.test_labels = np.concatenate(self._label_matrices[self.num_examples:])
+        else:
+            self.data = self._input_matrices[0]
+            self.labels = self._label_matrices[0]
+            self.test_data = self._input_matrices[0]
+            self.test_labels = self._label_matrices[0]
         self.data_preprocess()
 
         self.label_scaler.fit(self.labels)
