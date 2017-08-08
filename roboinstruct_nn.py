@@ -35,37 +35,37 @@ tf.global_variables_initializer().run()
 batch_xs = db.data
 batch_ys = db.labels
 
-for _ in range(10000):
+for _ in range(1000):
     # batch_xs, batch_ys = db.next_batch(100)
 
     if (_ % 100 == 0):
-        print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+        print(0.5, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
 
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.5})
 
-# for i in range(10000, 20000):
-#     batch_xs, batch_ys = db.next_batch(100)
-#
-#     if (i % 100 == 0):
-#         print(0.1, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
-#
-#     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.1})
-#
-# for i in range(20000, 50000):
-#     batch_xs, batch_ys = db.next_batch(100)
-#
-#     if (i % 100 == 0):
-#         print(0.01, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
-#
-#     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.01})
-#
-# for i in range(5000, 10000):
-#     batch_xs, batch_ys = db.next_batch(100)
-#
-#     if (i % 100 == 0):
-#         print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
-#
-#     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.001})
+for i in range(1000, 2000):
+    # batch_xs, batch_ys = db.next_batch(100)
+
+    if (i % 100 == 0):
+        print(0.1, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.1})
+
+for i in range(2000, 5000):
+    # batch_xs, batch_ys = db.next_batch(100)
+
+    if (i % 100 == 0):
+        print(0.01, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.01})
+
+for i in range(5000, 10000):
+    # batch_xs, batch_ys = db.next_batch(100)
+
+    if (i % 100 == 0):
+        print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.001})
 
 save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/states/last/model.ckpt")
 error = cost
