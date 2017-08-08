@@ -19,7 +19,7 @@ class Database(object):
         self._data_directory = data_directory
         self._epochs_completed = 0
         self._index_in_epoch = 0
-        self.num_examples = 1
+        self.num_examples = 9
         self.data_scaler = preprocessing.StandardScaler()
         self.label_scaler = preprocessing.StandardScaler()
         if use_PCA:
