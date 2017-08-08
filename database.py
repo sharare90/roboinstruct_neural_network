@@ -5,7 +5,7 @@ import numpy as np
 from sklearn import preprocessing, decomposition
 from sklearn.externals import joblib
 
-from settings import data_directory
+from settings import data_directory, input_size
 
 
 class Database(object):
@@ -23,7 +23,7 @@ class Database(object):
         self.data_scaler = preprocessing.StandardScaler()
         self.label_scaler = preprocessing.StandardScaler()
         self.data_normalizer = preprocessing.Normalizer()
-        self.data_PCA = decomposition.PCA(n_components=15)
+        self.data_PCA = decomposition.PCA(n_components=input_size)
         self._create_data()
 
     def _create_data(self):
@@ -74,6 +74,8 @@ class Database(object):
         joblib.dump(self.data_PCA, './states/last/data_PCA.pkl')
         self.data = self.data_PCA.transform(self.data)
         self.test_data = self.data_PCA.transform(self.test_data)
+        # print(self.data_PCA.components_)
+        print(self.data_PCA.explained_variance_)
         self.data_scaler.fit(self.data)
         joblib.dump(self.data_scaler, './states/last/data_scaler.pkl')
         self.data = self.data_scaler.transform(self.data)

@@ -1,12 +1,13 @@
 import tensorflow as tf
 from database import db
 
-x = tf.placeholder(tf.float32, [None, 15])
+from settings import input_size
 
-W1 = tf.Variable(tf.random_normal(shape=[15, 16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
+x = tf.placeholder(tf.float32, [None, input_size])
+
+W1 = tf.Variable(tf.random_normal(shape=[input_size, 16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 b1 = tf.Variable(tf.random_normal(shape=[16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 y1 = 1.7159 * (tf.tanh(tf.matmul(2 * x / 3, W1) + b1))
-# y1 = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 
 W2 = tf.Variable(tf.random_normal(shape=[16, 8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 b2 = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
@@ -36,13 +37,27 @@ for _ in range(1000):
     # batch_xs, batch_ys = db.next_batch(100)
     # batch_xs = db.data
     # batch_ys = db.labels
+    if (_ % 100 == 0):
+        print(0.5, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.5})
+
 for i in range(1000, 2000):
+    if (i % 100 == 0):
+        print(0.1, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.1})
 
 for i in range(2000, 5000):
+    if (i % 100 == 0):
+        print(0.01, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.01})
+
 for i in range(5000, 10000):
+    if (i % 100 == 0):
+        print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.001})
 
 save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/states/last/model.ckpt")
