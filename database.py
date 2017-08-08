@@ -5,7 +5,7 @@ import numpy as np
 from sklearn import preprocessing, decomposition
 from sklearn.externals import joblib
 
-from settings import data_directory, input_size_PCA, use_PCA
+from settings import data_directory, input_size_PCA, use_PCA, save_folder_name
 
 
 class Database(object):
@@ -46,7 +46,7 @@ class Database(object):
         self.data_preprocess()
 
         self.label_scaler.fit(self.labels)
-        joblib.dump(self.label_scaler, './states/last/label_scaler.pkl')
+        joblib.dump(self.label_scaler, save_folder_name + '/label_scaler.pkl')
         self.labels = self.label_scaler.transform(self.labels)
 
         self.test_labels = self.label_scaler.transform(self.test_labels)
@@ -75,18 +75,18 @@ class Database(object):
     def data_preprocess(self):
         if use_PCA:
             self.data_normalizer.fit(self.data)
-            joblib.dump(self.data_normalizer, './states/last/data_normalizer.pkl')
+            joblib.dump(self.data_normalizer, save_folder_name + '/data_normalizer.pkl')
             self.data = self.data_normalizer.transform(self.data)
             self.test_data = self.data_normalizer.transform(self.test_data)
             self.data_PCA.fit(self.data)
-            joblib.dump(self.data_PCA, './states/last/data_PCA.pkl')
+            joblib.dump(self.data_PCA, save_folder_name + '/data_PCA.pkl')
             self.data = self.data_PCA.transform(self.data)
             self.test_data = self.data_PCA.transform(self.test_data)
             # print(self.data_PCA.components_)
             print(self.data_PCA.explained_variance_)
 
         self.data_scaler.fit(self.data)
-        joblib.dump(self.data_scaler, './states/last/data_scaler.pkl')
+        joblib.dump(self.data_scaler, save_folder_name + '/data_scaler.pkl')
         self.data = self.data_scaler.transform(self.data)
         self.test_data = self.data_scaler.transform(self.test_data)
 

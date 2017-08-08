@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 import numpy as np
 import tensorflow as tf
-from settings import input_size_PCA, input_size, use_PCA, first_hidden_layer
+from settings import input_size_PCA, input_size, use_PCA, first_hidden_layer, load_folder_name
 from sklearn.externals import joblib
 
 
@@ -32,16 +32,16 @@ def evaluate(features):
     y = tf.matmul(y1, W2) + b2
     saver = tf.train.Saver()
     if use_PCA:
-        input_normalizer = joblib.load("./states/last/data_normalizer.pkl")
-        input_PCA = joblib.load("./states/last/data_PCA.pkl")
+        input_normalizer = joblib.load(load_folder_name + "/data_normalizer.pkl")
+        input_PCA = joblib.load(load_folder_name + "/data_PCA.pkl")
         features = input_normalizer.transform(features)
         features = input_PCA.transform(features)
 
-    input_scaler = joblib.load("./states/last/data_scaler.pkl")
-    output_scaler = joblib.load("./states/last/label_scaler.pkl")
+    input_scaler = joblib.load(load_folder_name + "/data_scaler.pkl")
+    output_scaler = joblib.load(load_folder_name + "/label_scaler.pkl")
     features = input_scaler.transform(features)
     with tf.Session() as sess:
-        saver.restore(sess, "./states/last/model.ckpt")
+        saver.restore(sess, load_folder_name + "/model.ckpt")
         output = sess.run(y, feed_dict={x: features})[0, :]
     output = output_scaler.inverse_transform(output)
     print(output)
