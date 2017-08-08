@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 import numpy as np
 import tensorflow as tf
-from settings import input_size_PCA, input_size
+from settings import input_size_PCA, input_size, use_PCA
 from sklearn.externals import joblib
 
 
@@ -21,7 +21,8 @@ def get_features_evaluate(arguments):
 def evaluate(features):
     x = tf.placeholder(tf.float32, [None, input_size_PCA])
 
-    W1 = tf.Variable(tf.random_normal(shape=[input_size_PCA, 16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    W1 = tf.Variable(
+        tf.random_normal(shape=[input_size_PCA, 16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
     b1 = tf.Variable(tf.random_normal(shape=[16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
     y1 = tf.matmul(x, W1) + b1
 
@@ -30,12 +31,14 @@ def evaluate(features):
 
     y = tf.matmul(y1, W2) + b2
     saver = tf.train.Saver()
-    input_normalizer = joblib.load("./states/last/data_normalizer.pkl")
-    # input_PCA = joblib.load("./states/last/data_PCA.pkl")
+    if use_PCA:
+        input_normalizer = joblib.load("./states/last/data_normalizer.pkl")
+        input_PCA = joblib.load("./states/last/data_PCA.pkl")
+        features = input_normalizer.transform(features)
+        features = input_PCA.transform(features)
+
     input_scaler = joblib.load("./states/last/data_scaler.pkl")
     output_scaler = joblib.load("./states/last/label_scaler.pkl")
-    features = input_normalizer.transform(features)
-    # features = input_PCA.transform(features)
     features = input_scaler.transform(features)
     with tf.Session() as sess:
         saver.restore(sess, "./states/last/model.ckpt")
