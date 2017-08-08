@@ -45,7 +45,7 @@ class Database(object):
         self.data_preprocess()
 
         self.label_scaler.fit(self.labels)
-        joblib.dump(self.label_scaler, 'label_scaler.pkl')
+        joblib.dump(self.label_scaler, './states/last/label_scaler.pkl')
         self.labels = self.label_scaler.transform(self.labels)
 
         self.test_labels = self.label_scaler.transform(self.test_labels)
