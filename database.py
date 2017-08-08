@@ -61,7 +61,7 @@ class Database(object):
             # Finished epoch
             self._epochs_completed += 1
             # Shuffle the data
-            perm = np.arange(self.num_examples)
+            perm = np.arange(44976)
             np.random.shuffle(perm)
             self.data = self.data[perm]
             self.labels = self.labels[perm]
