@@ -57,7 +57,7 @@ class Database(object):
     def next_batch(self, batch_size):
         start = self._index_in_epoch
         self._index_in_epoch += batch_size
-        if self._index_in_epoch > self.num_examples:
+        if self._index_in_epoch > 44976:
             # Finished epoch
             self._epochs_completed += 1
             # Shuffle the data
@@ -68,7 +68,7 @@ class Database(object):
             # Start next epoch
             start = 0
             self._index_in_epoch = batch_size
-            assert batch_size <= self.num_examples
+            assert batch_size <= 44976
         end = self._index_in_epoch
         return self.data[start:end], self.labels[start:end]
 
