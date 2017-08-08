@@ -22,11 +22,11 @@ def evaluate(features):
     x = tf.placeholder(tf.float32, [None, input_size_PCA])
 
     W1 = tf.Variable(
-        tf.random_normal(shape=[input_size_PCA, 16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
-    b1 = tf.Variable(tf.random_normal(shape=[16], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+        tf.random_normal(shape=[input_size_PCA, 64], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    b1 = tf.Variable(tf.random_normal(shape=[64], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
     y1 = tf.matmul(x, W1) + b1
 
-    W2 = tf.Variable(tf.random_normal(shape=[16, 8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
+    W2 = tf.Variable(tf.random_normal(shape=[64, 8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
     b2 = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None))
 
     y = tf.matmul(y1, W2) + b2
