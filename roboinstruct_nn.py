@@ -7,8 +7,8 @@ x = tf.placeholder(tf.float32, [None, input_size_PCA])
 
 W1 = tf.Variable(tf.random_normal(shape=[input_size_PCA, 64], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 b1 = tf.Variable(tf.random_normal(shape=[64], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
-# y1 = 1.7159 * (tf.tanh(tf.matmul(2 * x / 3, W1) + b1))
-y1 = tf.nn.relu(tf.matmul(x, W1) + b1)
+y1 = 1.7159 * (tf.tanh(tf.matmul(2 * x / 3, W1) + b1))
+# y1 = tf.nn.relu(tf.matmul(x, W1) + b1)
 
 W2 = tf.Variable(tf.random_normal(shape=[64, 8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 b2 = tf.Variable(tf.random_normal(shape=[8], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
