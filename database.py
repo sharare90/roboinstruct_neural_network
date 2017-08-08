@@ -5,7 +5,7 @@ import numpy as np
 from sklearn import preprocessing, decomposition
 from sklearn.externals import joblib
 
-from settings import data_directory, input_size
+from settings import data_directory, input_size_PCA
 
 
 class Database(object):
@@ -23,7 +23,7 @@ class Database(object):
         self.data_scaler = preprocessing.StandardScaler()
         self.label_scaler = preprocessing.StandardScaler()
         self.data_normalizer = preprocessing.Normalizer()
-        self.data_PCA = decomposition.PCA(n_components=input_size)
+        self.data_PCA = decomposition.PCA(n_components=input_size_PCA)
         self._create_data()
 
     def _create_data(self):

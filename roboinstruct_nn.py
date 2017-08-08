@@ -1,11 +1,11 @@
 import tensorflow as tf
 from database import db
 
-from settings import input_size
+from settings import input_size_PCA
 
-x = tf.placeholder(tf.float32, [None, input_size])
+x = tf.placeholder(tf.float32, [None, input_size_PCA])
 
-W1 = tf.Variable(tf.random_normal(shape=[input_size, 16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
+W1 = tf.Variable(tf.random_normal(shape=[input_size_PCA, 16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 b1 = tf.Variable(tf.random_normal(shape=[16], mean=0.0, stddev=0.25, dtype=tf.float32, seed=None, name=None))
 y1 = 1.7159 * (tf.tanh(tf.matmul(2 * x / 3, W1) + b1))
 
