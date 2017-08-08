@@ -19,7 +19,7 @@ class Database(object):
         self._data_directory = data_directory
         self._epochs_completed = 0
         self._index_in_epoch = 0
-        self.num_examples = 9
+        self.num_examples = 1
         self.data_scaler = preprocessing.StandardScaler()
         self.label_scaler = preprocessing.StandardScaler()
         if use_PCA:
@@ -82,7 +82,7 @@ class Database(object):
             joblib.dump(self.data_PCA, './states/last/data_PCA.pkl')
             self.data = self.data_PCA.transform(self.data)
             self.test_data = self.data_PCA.transform(self.test_data)
-            print(self.data_PCA.components_)
+            # print(self.data_PCA.components_)
             print(self.data_PCA.explained_variance_)
 
         self.data_scaler.fit(self.data)
