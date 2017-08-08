@@ -32,11 +32,11 @@ train_step = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 saver = tf.train.Saver()
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
-# batch_xs = db.data
-# batch_ys = db.labels
+batch_xs = db.data
+batch_ys = db.labels
 
 for _ in range(10000):
-    batch_xs, batch_ys = db.next_batch(100)
+    # batch_xs, batch_ys = db.next_batch(100)
 
     if (_ % 100 == 0):
         print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
