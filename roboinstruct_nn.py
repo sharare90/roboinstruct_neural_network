@@ -45,7 +45,9 @@ for _ in range(1000):
         print(0.5, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
 
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.5})
-print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
+    if (_ % 200 == 0):
+        sess.run(train_step, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001})
+# print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
 
 for i in range(1000, 2000):
     # batch_xs, batch_ys = db.next_batch(100)
@@ -54,25 +56,31 @@ for i in range(1000, 2000):
         print(0.1, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
 
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.1})
+    if (_ % 200 == 0):
+        sess.run(train_step, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001})
 # print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
 
-# for i in range(2000, 5000):
-#     # batch_xs, batch_ys = db.next_batch(100)
-#
-#     if (i % 100 == 0):
-#         print(0.01, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
-#
-#     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.01})
-# print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
-#
-# for i in range(5000, 10000):
-#     # batch_xs, batch_ys = db.next_batch(100)
-#
-#     if (i % 100 == 0):
-#         print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
-#
-#     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.001})
-# print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
+for i in range(2000, 10000):
+    # batch_xs, batch_ys = db.next_batch(100)
+
+    if (i % 100 == 0):
+        print(0.01, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.01})
+    if (_ % 200 == 0):
+        sess.run(train_step, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001})
+print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
+
+for i in range(10000, 12000):
+    # batch_xs, batch_ys = db.next_batch(100)
+
+    if (i % 100 == 0):
+        print(0.001, sess.run(cost, feed_dict={x: batch_xs, y_: batch_ys}))
+
+    sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys, learning_rate: 0.001})
+    if (_ % 200 == 0):
+        sess.run(train_step, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001})
+print("valid", sess.run(cost, feed_dict={x: db.valid_data, y_: db.valid_labels, learning_rate: 0.001}))
 
 save_path = saver.save(sess, "/home/sharare/PycharmProjects/roboinstruct_training/states/last/model.ckpt")
 error = cost
