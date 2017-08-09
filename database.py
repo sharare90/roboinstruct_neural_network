@@ -67,7 +67,7 @@ class Database(object):
     def get_length(self):
         return len(self.data)
 
-    def next_batch(self, batch_size):
+    def next_batch(self, batch_size, data, labels):
         start = self._index_in_epoch
         self._index_in_epoch += batch_size
         if self._index_in_epoch > 44976:
@@ -76,14 +76,14 @@ class Database(object):
             # Shuffle the data
             perm = np.arange(44976)
             np.random.shuffle(perm)
-            self.data = self.data[perm]
-            self.labels = self.labels[perm]
+            data = data[perm]
+            labels = labels[perm]
             # Start next epoch
             start = 0
             self._index_in_epoch = batch_size
             assert batch_size <= 44976
         end = self._index_in_epoch
-        return self.data[start:end], self.labels[start:end]
+        return data[start:end], labels[start:end]
 
     def data_preprocess(self):
         if use_PCA:
