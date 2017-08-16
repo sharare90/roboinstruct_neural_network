@@ -47,10 +47,10 @@ class NeuralNetwork(object):
         return tf.matmul(output, self.W[-1]) + self.B[-1]
 
     def feed_forward(self, x):
-        self.sess.run(self.y, feed_dict={self.x: x})
+        return self.sess.run(self.y, feed_dict={self.x: x})
 
     def evaluate_cost(self, x, y):
-        self.sess.run(self.cost, feed_dict={self.x: x, self.y_: y})
+        return self.sess.run(self.cost, feed_dict={self.x: x, self.y_: y})
 
     def train(self, x_train, y_train, iterations):
         for _ in range(iterations):
