@@ -26,9 +26,13 @@ class NeuralNetwork(object):
 
         self.y = self.define_feed_forward()
         self.cost = self.define_cost()
+        self.train_step = self.define_train_step()
 
-        self.sess = tf.InteractiveSession()
-        tf.global_variables_initializer().run()
+        self.sess = tf.Session()
+        self.sess.run(tf.initialize_all_variables())
+
+    def define_train_step(self):
+        return tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
 
     def define_cost(self):
         return tf.reduce_mean(tf.square(self.y - self.y_))
@@ -49,15 +53,13 @@ class NeuralNetwork(object):
         self.sess.run(self.cost, feed_dict={self.x: x, self.y_: y})
 
     def train(self, x_train, y_train, iterations):
-        train_step = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
-
         for _ in range(iterations):
             batch_xs, batch_ys = x_train, y_train
 
             if _ % 100 == 0:
                 print(self.evaluate_cost(batch_xs, batch_ys))
 
-            self.sess.run(train_step, feed_dict={
+            self.sess.run(self.train_step, feed_dict={
                 self.x: batch_xs, self.y_: batch_ys, self.learning_rate: self.learning_rate_value
             })
 
