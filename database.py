@@ -5,7 +5,7 @@ import numpy as np
 from sklearn import preprocessing, decomposition
 from sklearn.externals import joblib
 
-from settings import data_directory, valid_data_directory, input_size_PCA, use_PCA, save_folder_name
+from settings import data_directory, input_size_PCA, use_PCA, save_folder_name
 
 
 class Database(object):
@@ -21,7 +21,7 @@ class Database(object):
         self.test_data = None
         self.test_labels = None
         self._data_directory = data_directory
-        self.valid_data_directory = valid_data_directory
+        self.valid_data_directory = data_directory
         self._epochs_completed = 0
         self._index_in_epoch = 0
         self.num_examples = 1

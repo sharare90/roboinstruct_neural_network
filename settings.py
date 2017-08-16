@@ -1,5 +1,6 @@
-data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/ScriptData"
-valid_data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/NewData/numpy"
+# data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/ScriptData"
+data_directory = "/home/siavash/programming/RoboInstructDropboxUploader/data/trajectories/script/numpy/train"
+# valid_data_directory = "/home/sharare/SelfStudies/Robotics/RecurrentNeuralNetworkforRoboinstruct/NewData/numpy"
 
 input_size_PCA = 15
 input_size = 15
