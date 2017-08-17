@@ -6,7 +6,7 @@ def initialize_variable(shape, mean=0.0, stddev=0.25, dtype=tf.float32, seed=Non
 
 
 class NeuralNetwork(object):
-    def __init__(self, layers, learning_rate=0.001):
+    def __init__(self, layers, learning_rate, path=None):
         self.learning_rate_value = learning_rate
         self.layers = layers
 
@@ -28,8 +28,13 @@ class NeuralNetwork(object):
         self.cost = self.define_cost()
         self.train_step = self.define_train_step()
 
-        self.sess = tf.Session()
-        self.sess.run(tf.initialize_all_variables())
+        self.sess = tf.InteractiveSession()
+
+        if path is None:
+            tf.global_variables_initializer().run()
+        else:
+            saver = tf.train.Saver()
+            saver.restore(self.sess, path)
 
     def define_train_step(self):
         return tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
